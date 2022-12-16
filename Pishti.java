@@ -8,7 +8,7 @@ public class Pishti {
     System.out.println("before");
     deck1.getDeck();
     System.out.println("after the cut");
-    deck1.cut(1);
+    deck1.cut(4);
     deck1.getDeck();
    
 
