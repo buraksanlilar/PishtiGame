@@ -2,32 +2,25 @@ public class masa {
     private Card[] board = new Card[52];
     private Card[] player = new Card[4];
     private Card[] computer = new Card[4];
-    private int a=0;
-    private int b=0;
     private int count = 0;
-    private Card[] InitialDeal(Card[] deck,Card[] playershand) {
-    for(int i = 0;i<playershand.length;i++) {
-    if(playershand[i]!=null) {
-    break;
-    }else { 
-    count++;
-    }
-    }
-    if(count ==4) {
-        for(int i = 0;i<8;i++) {
-        player[i] = deck[a];
-        a++;
-        computer[i] = deck[a];
-        a++;
-        }
-        for(int i=0;i<4;i++) {
-        board[i] = deck[a];
-        a++;
-        }
-    }
-   return playershand;
-    
-
+    private void InitialDeal(Card[] deck,Card[] player,Card[] computer,Card[] board) {
+   int deckIndex = 0;
+   int playerIndex = 0;
+   int computerIndex = 0;
+   int boardIndex = 0;
+   while(playerIndex < 4 && computerIndex < 4) {
+    player[playerIndex] = deck[deckIndex];
+    deckIndex++;
+    computer[computerIndex] = deck[deckIndex];
+    deckIndex++;
+    playerIndex++;
+    computerIndex++;
+   }
+  while (boardIndex<4) {
+board[boardIndex] = deck[deckIndex];
+deckIndex++;
+boardIndex++;
+  }
     }
 }
 
