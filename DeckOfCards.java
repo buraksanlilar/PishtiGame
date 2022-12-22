@@ -21,13 +21,6 @@ deck[i]=deck[random];
 deck[random]=temp;
 }
 }
-public Card cardDeal() {
-if(current<deck.length) {
-return deck[current++];
-} else {
-return null;
-}
-}
 public void cut(int c) {
     Card [] top = new Card[c];
     Card [] bot = new Card[deck.length-c];
