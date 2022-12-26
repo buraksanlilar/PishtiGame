@@ -1,5 +1,5 @@
 public class DeckOfCards{
-private Card[] deck;
+private static Card[] deck;
 private int current;
 private int CARDNUMBER = 52;
 public DeckOfCards() {
@@ -38,5 +38,13 @@ public void cut(int c) {
     newDeck[bot.length+i]=top[i];
      }
      deck = newDeck;
+     }
+     public Card[] getCards() {
+      return deck;
+     }
+     public void showCards() {
+      for(int i = 0 ; i < 52 ; i++) {
+        System.out.println(deck[i]);
+      }
      }
     }

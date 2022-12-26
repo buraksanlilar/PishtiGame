@@ -1,10 +1,12 @@
 public class Player {
     private String playername;
-    private int handnumber;
-    private Card[] playershand;
-    public Player () {
-    this.playershand = new Card[4];
-    this.handnumber = 4;
+    public Card[] player;
+    private int playerscore;
+    private Card[] PLayerWin;
+    public Player (String playername,int handnumber,int playerscore,Card[] player) {
+    this.player = new Card[4];
+    this.playername= playername;
+    this.playerscore=playerscore;
 
     }
 }
