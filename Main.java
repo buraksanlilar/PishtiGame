@@ -9,11 +9,15 @@ public class Main {
     private int boardIndex = 0;
     private int gameTurn = 0;
     private int deckIndex = 0;
-    private Card[] playerWin;
+    private Card[] playerWon = new Card[52];
+    private Card[] computerWon = new Card[52];
     private Card played;
     private int StopPoint = 0;
     private int a = 0;
+    private int b = 0;
     private int playerpishti = 0;
+    private int computerpishti = 0;
+    public Card topCard;
     private Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
     Main game = new Main();
@@ -39,22 +43,29 @@ public class Main {
        for(int i = 0 ; i < 4;i++) { //bu kısmı oyuncularda yap her oyuncu oynadığında bu gözüksün mantıken
        System.out.println(player[i]);
        }
-       System.out.println("\n"+board[boardIndex-1]);
-       System.out.println(gameTurn);
+       System.out.println("Current board: ");
+       for (int i = StopPoint; i < boardIndex; i++) {
+       System.out.println(board[i]);
+       }
+
+       System.out.println("\n"+"gameturn: "+gameTurn);
        playerTurn();
        computerTurn(board, computer);
        gameTurn++;
       }
       if(gameTurn==48) {
-        System.out.println("The game is finished");
-        System.out.println(deckIndex);
+        System.out.println("game over");
+        for(int i = 0 ; i<a;i++) {
+        System.out.println(playerWon[i]);
+        }
+        
       }
       
     }
     public void playerTurn() {
       int index = -1;
     while (index < 0 || index >= player.length || player[index] == null) {
-        System.out.println("It is your turn please select your card between a(0-3)");
+        System.out.println("It is your turn please select your card between (0-3)");
         try {
             index = sc.nextInt();
         } catch (InputMismatchException e) {
@@ -66,12 +77,14 @@ public class Main {
             System.out.println("This card has been played before or is not in your hand.");
         }
     }
-
+  
     board[boardIndex] = player[index];
     played = player[index];
     player[index] = null;
     boardIndex++;
+    play(board, player, index);
     gameTurn++;
+
       
       
       
@@ -87,7 +100,7 @@ public class Main {
    }
    }
    //Deals to the board in order
-  while (boardIndex<FirstDeal) {
+  while (boardIndex < FirstDeal) {
   board[boardIndex] = deck[deckIndex];
   deckIndex++;
   boardIndex++;
@@ -95,57 +108,52 @@ public class Main {
   //The gameTurn defines the order for players to play and cards to deal from the deck.
   }
     }
-    public void PlayForPlayer(Card[] player,Card[] board,int index) {
-      // dont forget to cath with try cath phrases
-      // let the user choose a card from player array
-    if(player[index]!=null) {
-    board[boardIndex] = player[index];
-    played = player[index];
-    player[index] = null;
-    boardIndex++;
-    }else {
-      System.out.println("This card has been played before");
-      
-    }
-    }
     public void play(Card[] board,Card[]player,int index) {
-      Card topCard = board[boardIndex-1];
+      topCard = board[boardIndex-2];
       //This method checks Value of the topCard versus played card if it is equal to each other it makes the listed cards go to the playerWin[] and list there.
+     if(topCard!=null) {
      if (played.getValue() == topCard.getValue() && (boardIndex-StopPoint==1)  ) { 
       for(int i = StopPoint; i<boardIndex;i++) {
-        
-        playerWin[a] = board[i];
-        StopPoint = boardIndex;
+        playerWon[a] = board[i];
         board[i]= null;
         a++;
         playerpishti++;
         System.out.println("PİİSSHHTİİ");
         //When BoardIndex-StopPoint == 1 it means there is only two cards on top of the board so it is available for pishti
       }
-    if(played.getValue() == topCard.getValue() || played.getValue()=="J") {
+      StopPoint = boardIndex;
+    }
+   
+    else if(played.getValue() == topCard.getValue() || played.getValue()=="J") {
     for(int i = StopPoint; i<boardIndex;i++) {
-    playerWin[a] = board[i];
-    StopPoint = boardIndex;
+    playerWon[a] = board[i];
     board[i]= null;
     a++;
     }
-    } else if (played.getValue() != topCard.getValue() || played.getValue() !="J") {
-    board[boardIndex] = player[index];
-    boardIndex++;
+    StopPoint = boardIndex;
+    } }
+   else  {
+    return;
     } 
-
+  
   }
-}
+
 public void computerTurn(Card [] board,Card[] computer) { 
-  Card topCard = board[boardIndex-1];
+  topCard = board[boardIndex-1];
   // Try to find pishti
   
   for (int i = 0; i < computer.length; i++) {
-    if(computer[i]!=null) {
-    if (computer[i].getValue() == topCard.getValue() && (boardIndex-StopPoint)==1) {
+    if(computer[i]!=null && topCard!=null) {
+    if (computer[i].getValue() == topCard.getValue() && (boardIndex-StopPoint)==1 ) {
         board[boardIndex] = computer[i];
         computer[i] = null;
+        for(int j = StopPoint;j<=boardIndex;j++) {
+       computerWon[b] = board[j];
+       board[j] = null;
+       b++;
+        }
         boardIndex++;
+        computerpishti++;
         System.out.println("PİSHTİİİİ");
         return;
     }
@@ -153,11 +161,17 @@ public void computerTurn(Card [] board,Card[] computer) {
 }
   // Try to find a card in the computer's hand with the same value as the top card
   for (int i = 0; i < computer.length; i++) {
-      if(computer[i]!=null) {
+      if(computer[i]!=null && topCard != null) {
       if (computer[i].getValue() == topCard.getValue()) {
           board[boardIndex] = computer[i];
           computer[i] = null;
+          for(int k=StopPoint;k<=boardIndex;k++) {
+          computerWon[b]= board[k];
+          board[k]=null;
+          b++;
+          }
           boardIndex++;
+          StopPoint = boardIndex;
           return;
       }
     }
@@ -165,11 +179,17 @@ public void computerTurn(Card [] board,Card[] computer) {
 
   // If no matching card is found, try to find a card with a value of "J"
   for (int i = 0; i < computer.length; i++) {
-     if(computer[i]!=null) {
+     if(computer[i]!=null && topCard!=null) {
       if (computer[i].getValue() == "J") {
           board[boardIndex] = computer[i];
           computer[i] = null;
+          for(int k=StopPoint;k<=boardIndex;k++) {
+            computerWon[b]= board[k];
+            board[k]=null;
+            b++;
+            }
           boardIndex++;
+          StopPoint = boardIndex;
           return;
       }
     }

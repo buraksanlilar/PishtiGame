@@ -14,9 +14,6 @@ public void setValue(String value) {
 public String getSuit() {
     return suit;
 }
-public void setSuit() {
-    
-}
 public String toString() {
     return value+suit;
 }
