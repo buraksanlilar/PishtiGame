@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 public class Main {
     private Card[] board = new Card[52];
@@ -21,33 +22,64 @@ public class Main {
     public void start() {
       DeckOfCards deck1 = new DeckOfCards();
       deck1.shuffle();
-      System.out.println("Please choose a number between 1-52 to cut the desk");
-      int cut = sc.nextInt();
-      deck1.cut(cut);
-     
+      int cut = 0;
+      while(cut < 1 || cut >52) {
+        System.out.println("Please choose a number between 1-52 to cut the desk");
+        try {
+          cut = sc.nextInt();
+        } catch (InputMismatchException e) {
+          System.out.println("Invalid input");
+          sc.nextLine();
+          continue;
+        }
+      }
       
       while(gameTurn<48) {
        Deal(deck1.getCards(),player,computer,board);
-       for(int i = 0 ; i < 4;i++) {
+       for(int i = 0 ; i < 4;i++) { //bu kısmı oyuncularda yap her oyuncu oynadığında bu gözüksün mantıken
        System.out.println(player[i]);
        }
        System.out.println("\n"+board[boardIndex-1]);
        System.out.println(gameTurn);
-       playTurn();
-       gameTurn++;
-       computerplay(board, computer);
+       playerTurn();
+       computerTurn(board, computer);
        gameTurn++;
       }
+      if(gameTurn==48) {
+        System.out.println("The game is finished");
+        System.out.println(deckIndex);
+      }
+      
     }
-    public void playTurn() {
-      System.out.println("It is your turn please select your card between (0-3): ");
-      int index = sc.nextInt();
-      PlayForPlayer(player, board, index);
+    public void playerTurn() {
+      int index = -1;
+    while (index < 0 || index >= player.length || player[index] == null) {
+        System.out.println("It is your turn please select your card between a(0-3)");
+        try {
+            index = sc.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            sc.nextLine();
+            continue;
+        }
+        if (index < 0 || index >= player.length || player[index] == null) {
+            System.out.println("This card has been played before or is not in your hand.");
+        }
+    }
+
+    board[boardIndex] = player[index];
+    played = player[index];
+    player[index] = null;
+    boardIndex++;
+    gameTurn++;
+      
+      
+      
     }
     public void Deal(Card[] deck,Card[] player,Card[] computer,Card[] board) {
    //Deals one by one to computer and player from deck
    if(gameTurn % DealSize == 0) {
-    for (int i = 0 ; i<player.length;i++) { //while (gameTurn%DealSize==0) {} ın içine yazcaksın bunu çıkışında
+    for (int i = 0 ; i<player.length;i++) { 
     player[i] = deck[deckIndex];
     deckIndex++;
     computer[i] = deck[deckIndex];
@@ -66,10 +98,15 @@ public class Main {
     public void PlayForPlayer(Card[] player,Card[] board,int index) {
       // dont forget to cath with try cath phrases
       // let the user choose a card from player array
+    if(player[index]!=null) {
     board[boardIndex] = player[index];
     played = player[index];
     player[index] = null;
     boardIndex++;
+    }else {
+      System.out.println("This card has been played before");
+      
+    }
     }
     public void play(Card[] board,Card[]player,int index) {
       Card topCard = board[boardIndex-1];
@@ -99,7 +136,7 @@ public class Main {
 
   }
 }
-public void computerplay(Card [] board,Card[] computer) { 
+public void computerTurn(Card [] board,Card[] computer) { 
   Card topCard = board[boardIndex-1];
   // Try to find pishti
   
