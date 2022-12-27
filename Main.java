@@ -18,6 +18,8 @@ public class Main {
     private int playerpishti = 0;
     private int computerpishti = 0;
     public Card topCard;
+    private int playerscore = 0;
+    private int computerscore = 0;
     private Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
     Main game = new Main();
@@ -54,9 +56,14 @@ public class Main {
        gameTurn++;
       }
       if(gameTurn==48) {
-        System.out.println("game over");
-        for(int i = 0 ; i<a;i++) {
-        System.out.println(playerWon[i]);
+        System.out.println("game is over");
+        scorelist();
+        if(computerscore > playerscore) {
+          System.out.println(computerscore);
+        System.out.println("COMPUTER HAS WON THE GAME");
+        }else {
+          System.out.println(playerscore);
+          System.out.println("YOU WON THE GAME HURRAY!");
         }
         
       }
@@ -113,18 +120,19 @@ public class Main {
       //This method checks Value of the topCard versus played card if it is equal to each other it makes the listed cards go to the playerWin[] and list there.
      if(topCard!=null) {
      if (played.getValue() == topCard.getValue() && (boardIndex-StopPoint==1)  ) { 
+      System.out.println("PİİSSHHTİİ");
       for(int i = StopPoint; i<boardIndex;i++) {
         playerWon[a] = board[i];
         board[i]= null;
         a++;
         playerpishti++;
-        System.out.println("PİİSSHHTİİ");
         //When BoardIndex-StopPoint == 1 it means there is only two cards on top of the board so it is available for pishti
       }
       StopPoint = boardIndex;
     }
    
     else if(played.getValue() == topCard.getValue() || played.getValue()=="J") {
+      System.out.println("YOU WON THE ROUND");
     for(int i = StopPoint; i<boardIndex;i++) {
     playerWon[a] = board[i];
     board[i]= null;
@@ -142,7 +150,7 @@ public void computerTurn(Card [] board,Card[] computer) {
   topCard = board[boardIndex-1];
   // Try to find pishti
   
-  for (int i = 0; i < computer.length; i++) {
+  for (int i = 0; i < computer.length; i++) { //null oluyor kazanınca
     if(computer[i]!=null && topCard!=null) {
     if (computer[i].getValue() == topCard.getValue() && (boardIndex-StopPoint)==1 ) {
         board[boardIndex] = computer[i];
@@ -153,6 +161,7 @@ public void computerTurn(Card [] board,Card[] computer) {
        b++;
         }
         boardIndex++;
+        StopPoint= boardIndex;
         computerpishti++;
         System.out.println("PİSHTİİİİ");
         return;
@@ -160,7 +169,7 @@ public void computerTurn(Card [] board,Card[] computer) {
   }
 }
   // Try to find a card in the computer's hand with the same value as the top card
-  for (int i = 0; i < computer.length; i++) {
+  for (int i = 0; i < computer.length; i++) { 
       if(computer[i]!=null && topCard != null) {
       if (computer[i].getValue() == topCard.getValue()) {
           board[boardIndex] = computer[i];
@@ -172,6 +181,7 @@ public void computerTurn(Card [] board,Card[] computer) {
           }
           boardIndex++;
           StopPoint = boardIndex;
+          System.out.println("COMPUTER WON THE ROUND");
           return;
       }
     }
@@ -190,6 +200,7 @@ public void computerTurn(Card [] board,Card[] computer) {
             }
           boardIndex++;
           StopPoint = boardIndex;
+          System.out.println("COMPUTER WON THE ROUND");
           return;
       }
     }
@@ -202,9 +213,39 @@ public void computerTurn(Card [] board,Card[] computer) {
         board[boardIndex] = computer[random];
         computer[random] = null;
         boardIndex++;
+        System.out.println("COMPUTER PLAYED");
         break;
     }
+} 
 }
+public void scorelist() {
+  
+  for(int i = 0 ; i<a;i++ ) {
+   if(playerWon[i].toString()=="10D") {
+   playerscore = playerscore + 3 ;
+   }else if(playerWon[i].toString()=="2C") {
+   playerscore = playerscore + 3;
+   }else {
+    playerscore++;
+   }
+   playerscore=(playerpishti*10)+playerscore;
+  }
+
+for(int i = 0 ; i<b;i++ ) {
+   if(computerWon[i].toString()=="10D") {
+   computerscore = computerscore + 3 ;
+   }else if(computerWon[i].toString()=="2C") {
+   computerscore = computerscore + 3;
+   }else {
+    computerscore++;
+   }
+   computerscore=(computerpishti*10)+computerscore;
+  }
+  if(playerWon.length>computerWon.length) {
+  playerscore+=3;
+  } else {
+  computerscore+=3;
+  }
 }
 }
 
