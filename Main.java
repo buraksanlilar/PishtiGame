@@ -83,12 +83,12 @@ public class Main {
        gameTurn++;
       }
       if(gameTurn==48) {
-        System.out.println("game is over");
+        System.out.println("GAME IS OVER");
         
         scorelist(); 
         //scores are calculated.
         if(computerscore > playerscore) {
-        System.out.println("COMPUTER HAS WON THE GAME !!! YOU LOST  HERE İS THE COMPUTER'S SCORE: "+computerscore + "\n" + "YOUR SCORE: " + playerscore);
+        System.out.println("COMPUTER HAS WON THE GAME !!! YOU LOST  HERE IS THE COMPUTER'S SCORE: "+computerscore + "\n" + "YOUR SCORE: " + playerscore);
         }else {
           System.out.println("YOU WON THE GAME HURRAY! HERE İS YOUR SCORE: "+playerscore);
         }
@@ -312,7 +312,7 @@ public void addAndSaveScore(String name, int score) {
           numScores++;
       }
   } catch (IOException e) {
-      System.out.println("Error reading from scoreboard.txt: " + e.getMessage());
+      
   }
 
   //Add the new score to the array
@@ -336,7 +336,7 @@ public void addAndSaveScore(String name, int score) {
           f.format("%s:%d\n", scores[i].name, scores[i].score);
       }
   } catch (IOException e) {
-      System.out.println("Error writing to scoreboard.txt: " + e.getMessage());
+      System.out.println("Error writing to scoreboard.txt: ");
   }
 }
 
